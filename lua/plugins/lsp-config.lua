@@ -22,7 +22,6 @@ return {
 				excluded_servers = {
 					"ccls",                            -- prefer clangd
 					"denols",                          -- prefer eslint and ts_ls
-					"docker_compose_language_service", -- yamlls should be enough?
 					"flow",                            -- prefer eslint and ts_ls
 					"ltex",                            -- grammar tool using too much CPU
 					"quick_lint_js",                   -- prefer eslint and ts_ls

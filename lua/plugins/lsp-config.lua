@@ -1,36 +1,36 @@
 return {
 	{
-		"williamboman/mason.nvim",
+		"dundalek/lazy-lsp.nvim",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+			{ "VonHeikemen/lsp-zero.nvim", branch = "v3.x" },
+		},
 		config = function()
-			require("mason").setup()
-		end,
-	},
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			local mason_lspconfig = require("mason-lspconfig")
+			local lsp_zero = require("lsp-zero")
 
-			mason_lspconfig.setup({
-				automatic_installation = true,
+			lsp_zero.on_attach(function(_, bufnr)
+				lsp_zero.default_keymaps({
+					buffer = bufnr,
+					preserve_mappings = false
+				})
+
+				local opts = { buffer = bufnr, noremap = true, silent = true }
+				vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
+			end)
+
+			require("lazy-lsp").setup({
+				excluded_servers = {
+					"ccls",                            -- prefer clangd
+					"denols",                          -- prefer eslint and ts_ls
+					"docker_compose_language_service", -- yamlls should be enough?
+					"flow",                            -- prefer eslint and ts_ls
+					"ltex",                            -- grammar tool using too much CPU
+					"quick_lint_js",                   -- prefer eslint and ts_ls
+					"scry",                            -- archived on Jun 1, 2023
+					"tailwindcss",                     -- associates with too many filetypes
+					"biome",                           -- not mature enough to be default
+				},
 			})
-
-			mason_lspconfig.setup_handlers {
-				function(ls)
-					local capabilities = require("cmp_nvim_lsp").default_capabilities()
-					require("lspconfig")[ls].setup({
-						capabilities = capabilities,
-					})
-				end,
-			}
-		end,
-	},
-	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
-			vim.keymap.set("n", "gd", vim.lsp.buf.definition, {})
-			vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, {})
-		end,
+		end
 	},
 }
-

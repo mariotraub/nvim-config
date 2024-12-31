@@ -12,6 +12,8 @@ return {
 		"tpope/vim-fugitive",
 		config = function()
 			vim.keymap.set("n", "<leader>gc", ":Git add . | Git commit<CR>")
+			vim.keymap.set("n", "<leader>gp", ":Git! push")
+			vim.keymap.set("n", "<leader>diff", ":Gdiffsplit<CR>")
 		end
 	}
 }

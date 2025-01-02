@@ -21,5 +21,3 @@ vim.opt.scrolloff = 6
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
-
-vim.keymap.set('v', '<leader>c', "y:call system('perl -pe \"chomp if eof\" | clip.exe', @\")<CR>", {})

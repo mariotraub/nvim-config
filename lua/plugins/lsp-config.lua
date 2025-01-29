@@ -28,6 +28,7 @@ return {
 					"scry",                            -- archived on Jun 1, 2023
 					"tailwindcss",                     -- associates with too many filetypes
 					"biome",                           -- not mature enough to be default
+                    "pylyzer"                          -- does not work correctly
 				},
 			})
 		end

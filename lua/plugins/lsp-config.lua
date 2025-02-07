@@ -28,8 +28,18 @@ return {
 					"scry",                            -- archived on Jun 1, 2023
 					"tailwindcss",                     -- associates with too many filetypes
 					"biome",                           -- not mature enough to be default
-                    "pylyzer"                          -- does not work correctly
+					"pylyzer"                          -- does not work correctly
 				},
+			})
+
+			vim.api.nvim_create_autocmd("CursorHold", {
+				pattern = "*",
+				callback = function()
+					local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
+					if #diagnostics > 0 then
+						vim.diagnostic.open_float()
+					end
+				end
 			})
 		end
 	},

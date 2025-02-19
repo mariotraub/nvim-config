@@ -20,6 +20,6 @@ vim.opt.scrolloff = 6
 
 vim.opt.updatetime = 50
 
-vim.opt.colorcolumn = "80"
+vim.opt.colorcolumn = "120"
 
 vim.keymap.set("n", "<leader>br", ":%s/\\r//g<CR>", {})

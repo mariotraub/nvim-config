@@ -37,7 +37,7 @@ return {
 				callback = function()
 					local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
 					if #diagnostics > 0 then
-						vim.diagnostic.open_float()
+						vim.diagnostic.open_float({focusable = false})
 					end
 				end
 			})

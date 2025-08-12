@@ -14,10 +14,9 @@ return {
 
 			vim.keymap.set('n', '<leader>fg', function()
 				builtin.live_grep({
-					additional_args = function(args)
-						return vim.list_extend(args, { "--hidden" })
+					additional_args = function()
+						return { "--hidden", "--glob", "!**/.git/*" }
 					end,
-					file_ignore_patterns = { "^.git/" }
 				})
 			end, {})
 

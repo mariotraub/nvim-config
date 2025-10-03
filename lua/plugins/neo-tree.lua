@@ -15,7 +15,12 @@ return {
 						require("neo-tree.command").execute({ action = "close" })
 					end
 				}
-			}
+			},
+			filesystem = {
+				follow_current_file = {
+					enabled = true,
+				},
+			},
 		})
 		vim.keymap.set('n', '<C-n>', ':Neotree toggle<CR>', {})
 	end

@@ -18,6 +18,23 @@ return {
 				vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
 			end)
 
+			-- Ignore lspconfig deprecation warning in vim.notify & vim.deprecate
+			local vim_notify = vim.notify
+			vim.notify = function(msg, level, opts)
+				if type(msg) == "string" and msg:find("lspconfig.*deprecated", 1) then
+					return
+				end
+				vim_notify(msg, level, opts)
+			end
+
+			local vim_deprecate = vim.deprecate
+			vim.deprecate = function (name, alternative, version, plugin, backtrace)
+				if plugin == "nvim-lspconfig" then
+					return
+				end
+				vim_deprecate(name, alternative, version, plugin, backtrace)
+			end
+
 			require("lazy-lsp").setup({
 				excluded_servers = {
 					"ccls",                            -- prefer clangd
@@ -31,6 +48,9 @@ return {
 					"pylyzer"                          -- does not work correctly
 				},
 			})
+
+			vim.notify = vim_notify
+			vim.deprecate = vim_deprecate
 
 			vim.api.nvim_create_autocmd("CursorHold", {
 				pattern = "*",

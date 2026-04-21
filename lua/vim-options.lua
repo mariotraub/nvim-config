@@ -23,3 +23,12 @@ vim.opt.updatetime = 50
 vim.opt.colorcolumn = "120"
 
 vim.keymap.set("n", "<leader>br", ":%s/\\r//g<CR>", {})
+
+local modes = {"n", "i", "v"}
+
+for _, mode in ipairs(modes) do
+	vim.keymap.set(mode, "<Up>", function() vim.cmd("echo 'Arrow ↑ disabled'") end, { silent = true })
+	vim.keymap.set(mode, "<Down>", function() vim.cmd("echo 'Arrow ↓ disabled'") end, { silent = true })
+	vim.keymap.set(mode, "<Left>", function() vim.cmd("echo 'Arrow ← disabled'") end, { silent = true })
+	vim.keymap.set(mode, "<Right>", function() vim.cmd("echo 'Arrow → disabled'") end, { silent = true })
+end

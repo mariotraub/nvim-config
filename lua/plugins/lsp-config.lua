@@ -1,46 +1,28 @@
 return {
 	{
-		"dundalek/lazy-lsp.nvim",
-		dependencies = {
-			"neovim/nvim-lspconfig",
-			{ "VonHeikemen/lsp-zero.nvim", branch = "v3.x" },
+		"mason-org/mason-lspconfig.nvim",
+		opts = {
+			ensure_installed = {"lua_ls"},
 		},
-		config = function()
-			local lsp_zero = require("lsp-zero")
-
-			lsp_zero.on_attach(function(_, bufnr)
-				lsp_zero.default_keymaps({
-					buffer = bufnr,
-					preserve_mappings = false
-				})
-
-				local opts = { buffer = bufnr, noremap = true, silent = true }
-				vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-			end)
-
-			require("lazy-lsp").setup({
-				excluded_servers = {
-					"ccls",                            -- prefer clangd
-					"denols",                          -- prefer eslint and ts_ls
-					"flow",                            -- prefer eslint and ts_ls
-					"ltex",                            -- grammar tool using too much CPU
-					"quick_lint_js",                   -- prefer eslint and ts_ls
-					"scry",                            -- archived on Jun 1, 2023
-					"tailwindcss",                     -- associates with too many filetypes
-					"biome",                           -- not mature enough to be default
-					"pylyzer"                          -- does not work correctly
-				},
-			})
-
-			vim.api.nvim_create_autocmd("CursorHold", {
-				pattern = "*",
-				callback = function()
-					local diagnostics = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })
-					if #diagnostics > 0 then
-						vim.diagnostic.open_float({focusable = false})
-					end
+		dependencies = {
+			{ "mason-org/mason.nvim", opts={} },
+			"neovim/nvim-lspconfig"
+		},
+		config = function ()
+			vim.api.nvim_create_autocmd("LspAttach",{
+				callback = function (e)
+					local opts = {buffer = e.buf}
+					vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+					vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+					vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+					vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+					vim.keymap.set("n", "go", vim.lsp.buf.type_definition, opts)
+					vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+					vim.keymap.set("n", "gs", vim.lsp.buf.signature_help, opts)
+					vim.keymap.set("n", "<F2>", vim.lsp.buf.rename, opts)
+					vim.keymap.set("n", "<F3>", vim.lsp.buf.format, opts)
 				end
 			})
 		end
-	},
+	}
 }
